@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Combiner and Animator</title>
+</head>
+<body>
+    <h1>Combine and Animate Photos</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="image1">Upload Photo 1:</label>
+        <input type="file" id="image1" name="image1" required><br>
+        <label for="image2">Upload Photo 2:</label>
+        <input type="file" id="image2" name="image2" required><br>
+        <button type="submit">Combine and Animate</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const response = await fetch('/blend', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.blob();
+            const img = document.createElement('img');
+            img.src = URL.createObjectURL(result);
+            document.getElementById('result').appendChild(img);
+        });
+    </script>
+</body>
+</html>
